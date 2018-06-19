@@ -1,0 +1,26 @@
+namespace: Nikolag\Model
+name: Blog
+timestamps: true
+fillable:
+    - title
+    - description
+    - name
+dates:
+    - created_at
+    - updated_at
+    - deleted_at
+relationships:
+    -
+        name: name1
+        type: belongsTo
+        model: App\User
+    -
+        name: name3
+        type: hasOne
+        model: App\Blog
+    -
+        name: name2
+        type: belongsToMany
+        model: App\Post
+        pivot:
+            timestamp: true

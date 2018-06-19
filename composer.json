@@ -1,0 +1,64 @@
+{
+    "name": "nikolag/laragen",
+    "description": "Code generator for Lumen and Laravel frameworks",
+    "keywords": ["framework", "laravel", "lumen", "code generator", "class generator", "generator", "lumen generator", "laravel generator"],
+    "license": "MIT",
+    "type": "package",
+    "require": {
+        "php": ">=7.0.0",
+        "illuminate/support": "^5.5|^5.6",
+        "symfony/yaml": "^4.1"
+    },
+    "require-dev": {
+        "codeclimate/php-test-reporter": "^0.4.4",
+        "orchestra/testbench": "~3.4.0|~3.5.0",
+        "phpunit/phpunit": "^6.0|^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nikolag\\Generator\\": "src",
+            "Nikolag\\Generator\\Converter\\": "src/Converters",
+            "Nikolag\\Generator\\Converter\\Contract\\": "src/Converters/Contracts",
+            "Nikolag\\Generator\\Exception\\": "src/Exceptions",
+            "Nikolag\\Generator\\Helper\\": "src/Helpers",
+            "Nikolag\\Generator\\Helper\\Contract\\": "src/Helpers/Contracts",
+            "Nikolag\\Generator\\Model\\": "src/Models",
+            "Nikolag\\Generator\\Model\\Contract\\": "src/Models/Contracts",
+            "Nikolag\\Generator\\Provider\\": "src/Providers",
+            "Nikolag\\Generator\\Template\\": "src/Templates"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ],
+        "psr-4": {
+            "Nikolag\\Generator\\": "src",
+            "Nikolag\\Generator\\Converter\\": "src/Converters",
+            "Nikolag\\Generator\\Converter\\Contract\\": "src/Converters/Contracts",
+            "Nikolag\\Generator\\Exception\\": "src/Exceptions",
+            "Nikolag\\Generator\\Helper\\": "src/Helpers",
+            "Nikolag\\Generator\\Helper\\Contract\\": "src/Helpers/Contracts",
+            "Nikolag\\Generator\\Model\\": "src/Models",
+            "Nikolag\\Generator\\Model\\Contract\\": "src/Models/Contracts",
+            "Nikolag\\Generator\\Provider\\": "src/Providers",
+            "Nikolag\\Generator\\Template\\": "src/Templates",
+            "Nikolag\\Generator\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Nikolag\\Generator\\Provider\\GeneratorServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
