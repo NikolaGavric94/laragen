@@ -13,13 +13,6 @@ class Relationship extends AbstractModel
 {
     public $templateName = "model/relationship";
 
-    public function __construct(array $relationship = [])
-    {
-        foreach ($relationship as $key => $value) {
-            $this->{$key} = $value;
-        }
-    }
-
     /**
      * @return bool
      */
@@ -36,7 +29,7 @@ class Relationship extends AbstractModel
         if (is_array($name)) {
             $key = key($name);
             if ($key == 'pivot') {
-                $this->data[$key] = new Pivot($name);
+                $this->data[$key] = (new Pivot())->fill($name);
             }
         } else {
             $this->data[$name] = $value;
@@ -52,7 +45,7 @@ class Relationship extends AbstractModel
     {
         if (array_has($this->data, $name)) {
             if ($name == "pivot") {
-                return new Pivot($this->data[$name]);
+                return (new Pivot())->fill($this->data[$name]);
             }
 
             return $this->data[$name];

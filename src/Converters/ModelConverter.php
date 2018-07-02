@@ -29,7 +29,12 @@ class ModelConverter extends Converter implements IModel
 
         $tempFillable = $this->convertFromMultipleAttributes($fillableData);
 
-        $this->template->setCompiled($this->replacer->replaceTemplateVariable($this->template, "fillable", $tempFillable));
+        $dataArr = array_merge(
+            $this->template->getData(),
+            ['fillable' => $tempFillable]
+        );
+
+        $this->template->with($dataArr)->get();
 
         return $this;
     }
@@ -43,7 +48,12 @@ class ModelConverter extends Converter implements IModel
 
         $tempDates = $this->convertFromMultipleAttributes($datesData);
 
-        $this->template->setCompiled($this->replacer->replaceTemplateVariable($this->template, "dates", $tempDates));
+        $dataArr = array_merge(
+            $this->template->getData(),
+            ['dates' => $tempDates]
+        );
+
+        $this->template->with($dataArr)->get();
 
         return $this;
     }
@@ -54,9 +64,15 @@ class ModelConverter extends Converter implements IModel
     public function withTimestamps()
     {
         $withTimestamps = $this->template->hasData('timestamps') ? $this->template->getData('timestamps') : false;
-        $tempVal = $withTimestamps ? "true" : "false";
 
-        $this->template->setCompiled($this->replacer->replaceTemplateVariable($this->template, "timestamps", $tempVal));
+        $tempTimestamps = $withTimestamps ? "true" : "false";
+
+        $dataArr = array_merge(
+            $this->template->getData(),
+            ['timestamps' => $tempTimestamps]
+        );
+
+        $this->template->with($dataArr)->get();
 
         return $this;
     }
@@ -64,8 +80,8 @@ class ModelConverter extends Converter implements IModel
     /**
      * @inheritdoc
      */
-    public function convertToRelationships()
-    {
+    public function convertToRelationships() {
+        $____hello = "Test";
         $relationshipData = $this->template->hasData('relationships') ? $this->template->getData('relationships') : [];
         $tempRelationships = $relationshipData;
         $compiledRelationships = "";
@@ -74,18 +90,18 @@ class ModelConverter extends Converter implements IModel
             $lastElement = array_pop($tempRelationships);
             array_push($tempRelationships, $lastElement);
 
-            $compiledRelationships = array_map(function (Relationship $relation) use ($lastElement) {
-                $relationArray = $relation->toArray();
+            $compiledRelationships = array_map(function (array $relation) use ($lastElement) {
+                $relation = (new Relationship())->fill($relation);
                 $relationshipTemplate = $this->loader->load($relation->templateName);
 
-                $relation = array_merge(
+                $tempRelation = array_merge(
                     $this->convertToPivotRelationship($relation),
-                    $relationArray
+                    $relation->toArray()
                 );
 
                 $newLine = ($lastElement != $relation) ? PHP_EOL : '';
 
-                return $this->spacer->createSpaces($this->replacer->replaceTemplateVariables($relationshipTemplate, $relation)) . $newLine;
+                return $relationshipTemplate->with($tempRelation)->get() . $newLine;
             }, $tempRelationships);
 
             $compiledRelationships = implode(PHP_EOL, $compiledRelationships);
@@ -93,7 +109,12 @@ class ModelConverter extends Converter implements IModel
             $compiledRelationships = PHP_EOL . $compiledRelationships;
         }
 
-        $this->template->setCompiled($this->replacer->replaceTemplateVariable($this->template, "relationships", $compiledRelationships));
+        $dataArr = array_merge(
+            $this->template->getData(),
+            ['relationships' => $compiledRelationships]
+        );
+
+        $this->template->with($dataArr)->get();
 
         return $this;
     }
@@ -123,8 +144,8 @@ class ModelConverter extends Converter implements IModel
     {
         if ($pivot->hasColumns()) {
             $template = $this->loader->load($pivot->templateName[0]);
-            $pivot->columns = $this->convertFromMultipleAttributes($pivot->columns, false);
-            return $template->with($pivot)->get();
+            $tempColumns = $this->convertFromMultipleAttributes($pivot->columns, false);
+            return $template->with(['columns' => $tempColumns])->get();
         }
 
         return "";

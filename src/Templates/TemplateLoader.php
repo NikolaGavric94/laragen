@@ -66,7 +66,7 @@ class TemplateLoader
             }
         }
 
-        return new Template($this, $this->loaded[$this->default][$name]);
+        return new Template($this->loaded[$this->default][$name]);
     }
 
     /**
@@ -80,10 +80,7 @@ class TemplateLoader
     public function save(Template $template, string $path)
     {
         try {
-            if($template->isDirty()) {
-                $this->fs->put($path, $template->get(), true);
-                $template->clean();
-            }
+            $this->fs->put($path, $template->get(), true);
         } catch (Exception $e) {
             throw new TemplateException("Unable to save the file '{$path}'");
         }

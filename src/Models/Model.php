@@ -16,16 +16,6 @@ class Model extends AbstractModel
     public $templateName = "model";
 
     /**
-     * @param array $data
-     */
-    public function fill(array $data)
-    {
-        foreach ($data as $property => $value) {
-            $this->{$property} = $value;
-        }
-    }
-
-    /**
      * @param $name
      * @param $value
      */
@@ -34,7 +24,7 @@ class Model extends AbstractModel
         if (is_array($name)) {
             $key = key($name);
             if ($key == 'relationships') {
-                $this->data[$key][] = new Relationship($name);
+                $this->data[$key][] = (new Relationship())->fill($name);
             }
         } else {
             $this->data[$name] = $value;
@@ -54,7 +44,7 @@ class Model extends AbstractModel
 
                 if (!is_null($this->data[$name])) {
                     foreach ($this->data[$name] as $one) {
-                        $toRet[] = new Relationship($one);
+                        $toRet[] = (new Relationship())->fill($one);
                     }
                 }
 

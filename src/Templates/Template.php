@@ -8,9 +8,7 @@
 
 namespace Nikolag\Generator\Template;
 
-use Nikolag\Generator\Model\Contract\Clazz as IClass;
 use Nikolag\Generator\Helper\Replacer;
-use \stdClass;
 
 /**
  * Class Template
@@ -20,19 +18,15 @@ use \stdClass;
 class Template
 {
     /**
-     * @var TemplateLoader
-     */
-    protected $loader;
-    /**
      * @var string
      */
-    protected $content;
+    protected $text;
     /**
      * @var string
      */
     protected $compiled;
     /**
-     * @var IClass
+     * @var array
      */
     protected $data;
     /**
@@ -43,15 +37,13 @@ class Template
     /**
      * Template constructor.
      *
-     * @param TemplateLoader $loader
-     * @param string $content
+     * @param string $text
      */
-    public function __construct(TemplateLoader $loader, string $content)
+    public function __construct(string $text)
     {
-        $this->loader = $loader;
-        $this->content = $content;
-        $this->compiled = $content;
-        $this->data = new stdClass();
+        $this->text = $text;
+        $this->compiled = $text;
+        $this->data = [];
         $this->dirty = false;
     }
 
@@ -73,19 +65,23 @@ class Template
     {
         $this->data = [];
         $this->dirty = false;
+        $this->compiled = $this->text;
 
         return $this;
     }
 
     /**
-     * Get part of data
+     * Get part of data or all data
      *
      * @param string $name
      *
-     * @return string
+     * @return mixed
      */
-    public function getData(string $name) {
-        return $this->hasData($name) ? $this->data->{$name} : "";
+    public function getData(string $name = 'all') {
+        if ($name == 'all')
+            return $this->data;
+
+        return $this->data[$name];
     }
 
     /**
@@ -96,37 +92,23 @@ class Template
      * @return bool
      */
     public function hasData(string $name) {
-        return isset($this->data, $name) && !is_null($this->data->{$name});
+        return array_key_exists($name, $this->data) && !is_null($this->data[$name]);
     }
 
     /**
      * Convertible template data
      *
-     * @param IClass $data
+     * @param array $data
      *
      * @return $this
      */
-    public function with(IClass $data)
+    public function with(array $data = [])
     {
         if ($data)
             $this->dirty = true;
         $this->data = $data;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCompiled() {
-        return $this->compiled;
-    }
-
-    /**
-     * @param string $compiled
-     */
-    public function setCompiled(string $compiled) {
-        $this->compiled = $compiled;
     }
 
     /**
@@ -153,7 +135,7 @@ class Template
     {
         $replacer = new Replacer();
 
-        $this->compiled = $replacer->replaceTemplateVariables($this, $this->data->toArray());
+        $this->compiled = $replacer->replaceTemplateVariables($this->compiled, $this->data);
 
         return $this;
     }

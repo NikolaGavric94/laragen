@@ -18,6 +18,20 @@ abstract class AbstractModel implements Clazz
     protected $data = [];
 
     /**
+     * @param array $data
+     *
+     * @return $this
+     */
+    public function fill(array $data)
+    {
+        foreach ($data as $property => $value) {
+            $this->{$property} = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * @param $name
      *
      * @return bool

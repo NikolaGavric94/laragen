@@ -8,21 +8,18 @@
 
 namespace Nikolag\Generator\Helper\Contract;
 
-
-use Nikolag\Generator\Template\Template;
-
 interface Replacer
 {
     /**
      * Replace template variable
      *
-     * @param Template $template
+     * @param string $text
      * @param string $name
      * @param string $value
      *
      * @return string
      */
-    public function replaceTemplateVariable(Template $template, string $name, string $value);
+    public function replaceTemplateVariable(string $text, string $name, string $value);
 
     /**
      * Replace multiple template variables recursively.
@@ -55,11 +52,11 @@ interface Replacer
      * }
      * ```
      *
-     * @param Template $template
+     * @param string $text
      * @param array $data
      * @param int $numericKey
      *
      * @return string
      */
-    public function replaceTemplateVariables(Template $template, array $data, int $numericKey = 0);
+    public function replaceTemplateVariables(string $text, array $data, int $numericKey = 0);
 }

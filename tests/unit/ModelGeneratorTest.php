@@ -8,7 +8,6 @@
 
 namespace Nikolag\Generator\Test;
 
-
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 use Nikolag\Generator\Converter\ModelConverter;
@@ -42,7 +41,8 @@ class ModelGeneratorTest extends TestCase
     /**
      *
      */
-    public function assertPreConditions() {
+    public function assertPreConditions()
+    {
         parent::assertPreConditions();
         $this->modelConverter = $this->app->make(ModelConverter::class);
         Storage::fake('models');
@@ -56,8 +56,9 @@ class ModelGeneratorTest extends TestCase
      * @return \Nikolag\Generator\Template\Template
      * @throws \Nikolag\Generator\Exception\TemplateException
      */
-    public function save() {
-        $template = $this->loader->load($this->model->templateName)->with($this->model);
+    public function save()
+    {
+        $template = $this->loader->load($this->model->templateName)->with($this->model->toArray());
         $template = $this->modelConverter->compile($template);
         $this->loader->save($template, $this->storagePath . "Blog.php");
         return $template;
@@ -66,7 +67,8 @@ class ModelGeneratorTest extends TestCase
     /**
      * @throws \Nikolag\Generator\Exception\TemplateException
      */
-    public function test_create_model_from_yml_file() {
+    public function test_create_model_from_yml_file()
+    {
         $this->model->fill($this->data);
 
         $this->save();
@@ -77,7 +79,8 @@ class ModelGeneratorTest extends TestCase
     /**
      * @throws \Nikolag\Generator\Exception\TemplateException
      */
-    public function test_created_model_file_from_yml_file() {
+    public function test_created_model_file_from_yml_file()
+    {
         $this->model->fill($this->data);
 
         $template = $this->save();
@@ -87,9 +90,10 @@ class ModelGeneratorTest extends TestCase
     }
 
     /**
-     * @throws \Nikolag\Generator\Exception\TemplateException
+     * @return void
      */
-    public function test_model_data_equals() {
+    public function test_model_data_equals()
+    {
         $this->model->fill($this->data);
 
         $this->assertEquals($this->model->namespace, $this->data['namespace']);

@@ -2,8 +2,6 @@
 
 namespace Nikolag\Generator\Test;
 
-use Illuminate\Support\Facades\Storage;
-use Nikolag\Generator\Converter\ModelConverter;
 use Nikolag\Generator\Template\TemplateLoader;
 use Orchestra\Testbench\TestCase as Orchestra;
 

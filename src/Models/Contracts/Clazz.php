@@ -13,5 +13,10 @@ use Illuminate\Contracts\Support\Jsonable;
 
 interface Clazz extends Arrayable, Jsonable
 {
-
+    /**
+     * @param array $data
+     *
+     * @return void
+     */
+    public function fill(array $data);
 }

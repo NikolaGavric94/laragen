@@ -12,13 +12,6 @@ class Pivot extends AbstractModel
 {
     public $templateName = ["model/pivot/columns", "model/pivot/timestamp"];
 
-    public function __construct($data = [])
-    {
-        foreach ($data as $key => $value) {
-            $this->{$key} = $value;
-        }
-    }
-
     /**
      * @return bool
      */
